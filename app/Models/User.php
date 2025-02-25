@@ -17,9 +17,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'nama_lengkap',
-       
-       
+        'hp',
         'email',
         'password',
     ];
@@ -53,10 +53,10 @@ class User extends Authenticatable
     }
     public function isAdmin()
     {
-        return $this->hasRole()->where('role','admin')->exists();
+        return $this->hasRole()->Where('role','admin')->exists();
     }
-    public function isUser()
-    {
-        return $this->hasRole()->where('role','user')->exists();
-    }
+public function isUser()
+{
+    return $this->hasRole()->Where('role','user')->exists();
+}
 }
