@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AbsenController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,6 +24,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::patch('/users/{user}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+
+    Route::get('/absen', [AbsenController::class, 'index'])->name('absen.index');
+    Route::get('/absen/create', [AbsenController::class, 'create'])->name('absen.create');
+    Route::post('/absen', [AbsenController::class, 'store'])->name('absen.store');
+    Route::get('/absen/{absen}', [AbsenController::class, 'show'])->name('absen.show');
+    Route::get('/absen/{absen}/edit', [AbsenController::class, 'edit'])->name('absen.edit');
+    Route::patch('/absen/{absen}', [AbsenController::class, 'update'])->name('absen.update');
+    Route::delete('/absen/{absen}', [AbsenController::class, 'destroy'])->name('absen.destroy');
 });
 
 require __DIR__.'/auth.php';

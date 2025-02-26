@@ -1,67 +1,68 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if($message =Session::get('success'))
-                    <div class="alert alert-success" role="alert">
-                        <strong>{{$message}}</strong>
-                    </div>
-                    @endif
-                    <a href="{{Route('user.create')}}" class="btn btn-success btn-md m-4"><i class="fa fa-plus"></i>Tambah User</a>
-                    <table class="table table-strip table-bordered">
-                    <thead>
-                    <tr>
-                        <th>No.</th>
-                      
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Level</th>
-                        <th>Aksi</th>
-                    </tr>                        
+@section('content')
+<div class="container mx-auto p-4">
+    <div class="flex justify-center">
+        <div class="w-full lg:w-8/12 xl:w-6/12 p-6 bg-white rounded shadow-md">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">{{ __('absen') }}</h2>
+                <a href="{{Route('absen.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <i class="fa fa-plus"></i>Tambah Absen
+                </a>
+            </div>
+
+            @if($message =Session::get('success'))
+            <div class="alert alert-success" role="alert">
+                <strong>{{$message}}</strong>
+            </div>
+            @endif
+
+            <div class="overflow-x-auto">
+                <table class="table-auto w-full">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2">No.</th>
+                            <th class="px-4 py-2">Nama</th>
+                            <th class="px-4 py-2">Jurusan</th>
+                            <th class="px-4 py-2">Kelas</th>
+                            <th class="px-4 py-2">Aksi</th>
+                        </tr>
                     </thead>
-
                     <tbody>
-                    @foreach($users as $user)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{$user->name}}</td>
-                       
-                        <td>{{$user->email}}</td>
-                        <td>{{ucfirst($user->hasRole()->value('role'))}}</td>
-                        <td>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <a href="{{route('user.edit',$user->id)}}" class="btn btn-sm btn-secondary mx-1 shadow" title="Edit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-</svg>
-                                    </a>
-                            </div>
-                            <form method="POST" action="{{ route('user.destroy',$user->id) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-delete"> 
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-</svg>
-                                </button>
-                            </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
+                        @if(isset($absens))
+                            @foreach($absens as $absen)
+                            <tr>
+                                <td class="border px-4 py-2">{{$loop->iteration}}</td>
+                                <td class="border px-4 py-2">{{$absen->nama}}</td>
+                                <td class="border px-4 py-2">{{$absen->jurusan->nama_jurusan ?? 'Tidak Ada'}}</td>
+                                <td class="border px-4 py-2">{{$absen->kelas}}</td>
+                                <td class="border px-4 py-2">
+                                    <div class="flex justify-center">
+                                        <a href="{{route('absen.edit',$absen->id)}}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" title="Edit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.813z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                            </svg>
+                                        </a>
+                                        <form method="POST" action="{{ route('absen.destroy',$absen->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-r" title="Delete">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        @endif
                     </tbody>
-                    </table>
-                    {{$users->links()}}
-                </div>
+                </table>
+                @if(isset($absens))
+                    {{$absens->links()}}
+                @endif
             </div>
         </div>
     </div>
@@ -71,8 +72,8 @@ $(".btn-delete").click(function(e){
     e.preventDefault();
     var form = $(this).parents("form");
     Swal.fire({
-        title: "Konfirmasi Hapus User",
-        text: "Apakah Anda Yakin Akan Menghapus User ini?",
+        title: "Konfirmasi Hapus Absen",
+        text: "Apakah Anda Yakin Akan Menghapus Absen ini?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -85,4 +86,4 @@ $(".btn-delete").click(function(e){
     });
 });
 </script>
-</x-app-layout>
+@endsection

@@ -32,7 +32,7 @@
                         @foreach($users as $user)
                         <tr>
                             <td class="border px-4 py-2">{{$loop->iteration}}</td>
-                            <td class="border px-4 py-2">{{$user->nama_lengkap}}</td>
+                            <td class="border px-4 py-2">{{$user->name}}</td>
                             <td class="border px-4 py-2">{{$user->email}}</td>
                             <td class="border px-4 py-2">{{ucfirst($user->hasRole()->value('role'))}}</td>
                             <td class="border px-4 py-2">
