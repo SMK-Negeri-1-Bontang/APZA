@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Absen;
 use App\Models\Jurusan;
+use App\Models\User;
 use Exception;
 
 class AbsenController extends Controller
@@ -36,12 +37,14 @@ class AbsenController extends Controller
             'nama' => 'required|string|max:255',
             'jurusan_id' => 'required|integer|exists:jurusan,id',
             'kelas' => 'required|string|max:255',
+            'nis' => 'required|numeric|exists:users,nis',
         ]);
 
         $absen = new Absen();
         $absen->nama = $validatedData['nama'];
         $absen->jurusan_id = $validatedData['jurusan_id'];
         $absen->kelas = $validatedData['kelas'];
+        $absen->nis = $validatedData['nis'];
         $absen->save();
 
         return redirect()->route('absen.index')->with('success', 'Absen berhasil ditambahkan!');

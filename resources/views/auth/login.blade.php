@@ -57,7 +57,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+                        <div class="row mb-2">
                             <div class="col-md-8">
                                 <button type="submit" class="btn btn-primary float-start">
                                     {{ __('Log in') }}
@@ -66,7 +66,7 @@
                         </div>
 
                         <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
+                            <div class="col-md-8 offset-md-0">
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot your password?') }}

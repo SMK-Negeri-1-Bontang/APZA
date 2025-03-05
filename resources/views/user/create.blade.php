@@ -49,10 +49,10 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="hp" class="col-md-4 col-form-label text-md-end">{{ __('No HP') }}</label>
+                            <label for="nis" class="col-md-4 col-form-label text-md-end">{{ __('NIS') }}</label>
                             <div class="col-md-6">
-                                <input id="hp" type="text" class="form-control @error('hp') is-invalid @enderror" name="hp" value="{{ old('hp') }}" required autocomplete="hp">
-                                @error('hp')
+                                <input id="nis" type="text" class="form-control @error('nis') is-invalid @enderror" name="nis" value="{{ old('nis') }}" required autocomplete="nis">
+                                @error('nis')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

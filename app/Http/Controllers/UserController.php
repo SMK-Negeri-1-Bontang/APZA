@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+use Exception;
 
 class UserController extends Controller
 {
@@ -14,9 +18,10 @@ class UserController extends Controller
      */
     public function index()
     { 
-        $users = User::paginate(5);
-        return view('user.index', ['users' => $users]);  
+        $user = User::paginate(5);
+        return view('user.index')->withuser($user);  
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -32,18 +37,21 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'name' => 'required|min:5',
             'nama_lengkap' => 'required|unique:users|min:5',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5',
             'role' => 'required',
+            'nis' => 'required|numeric',
         ]);
 
         try {
             $user = User::create([
+                'name' => $request->name,
                 'nama_lengkap' => $request->nama_lengkap,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                
+                'nis' => $request->nis,
             ]);
 
             if ($user) {
@@ -52,7 +60,7 @@ class UserController extends Controller
                 $role->role = $request->role;
                 $role->save();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', 'Data Gagal Disimpan');
         }
 
@@ -64,22 +72,17 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find($id);
-        if (!$user) {
-            abort(404);
-        }
-        return view('user.show', ['user' => $user]);
+    //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
+
+
     public function edit(string $id)
     {
         $user = User::find($id);
-        if (!$user) {
-            abort(404);
-        }
         return view('user.edit', ['user' => $user]);
     }
 
@@ -89,15 +92,19 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
+            'name' => 'required|min:5',
             'nama_lengkap' => 'required|min:5|unique:users,nama_lengkap,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
             'role' => 'required',
+            'nis' => 'required|numeric',
         ]);
 
         try {
             $user = User::find($id); 
+            $user->name = $request->name;
             $user->nama_lengkap = $request->nama_lengkap;
             $user->email = $request->email;
+            $user->nis = $request->nis;
 
             if ($request->password != '') {
                 $user->password = Hash::make($request->password);
@@ -115,7 +122,7 @@ class UserController extends Controller
                 } 
                 $role->save();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', 'Data Gagal Disimpan');
         }
 
@@ -131,7 +138,7 @@ class UserController extends Controller
 
         try {
             $user->delete();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', 'User Gagal dihapus');
         }
 

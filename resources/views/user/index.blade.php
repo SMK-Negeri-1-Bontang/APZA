@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
+<div class="container mx-auto p-8">
     <div class="flex justify-center">
-        <div class="w-full lg:w-8/12 xl:w-6/12 p-6 bg-white rounded shadow-md">
+        <div class="w-full lg:w-250 xl:w-250 p-6 bg-white rounded shadow-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg font-bold">{{ __('profile') }}</h2>
                 <a href="{{Route('user.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -17,7 +17,7 @@
             </div>
             @endif
 
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto w-full">
                 <table class="table-auto w-full">
                     <thead class="bg-gray-100">
                         <tr>
@@ -25,28 +25,34 @@
                             <th class="px-4 py-2">Nama Lengkap</th>
                             <th class="px-4 py-2">Email</th>
                             <th class="px-4 py-2">Level</th>
+                            <th class="px-4 py-2">NIS</th>
+                            <th class="px-4 py-2">Jurusan</th>
+                            <th class="px-4 py-2">Kelas</th>
                             <th class="px-4 py-2">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
+                        @foreach($user as $users)
                         <tr>
                             <td class="border px-4 py-2">{{$loop->iteration}}</td>
-                            <td class="border px-4 py-2">{{$user->name}}</td>
-                            <td class="border px-4 py-2">{{$user->email}}</td>
-                            <td class="border px-4 py-2">{{ucfirst($user->hasRole()->value('role'))}}</td>
+                            <td class="border px-4 py-2">{{$users->name}}</td>
+                            <td class="border px-4 py-2">{{$users->email}}</td>
+                            <td class="border px-4 py-2">{{ucfirst($users->hasRole()->value('role'))}}</td>
+                            <td class="border px-4 py-2">{{$users->nis}}</td>
+                            <td class="border px-4 py-2">{{$users->jurusan->nama_jurusan ?? 'Tidak Ada'}}</td>
+                            <td class="border px-4 py-2">{{$users->jurusan->kelas ?? 'Tidak Ada'}}</td>
                             <td class="border px-4 py-2">
                                 <div class="flex justify-center">
-                                    <a href="{{route('user.edit',$user->id)}}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" title="Edit">
+                                    <a href="{{route('user.edit',$users->id)}}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" title="Edit">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.813z"/>
                                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                         </svg>
                                     </a>
-                                    <form method="POST" action="{{ route('user.destroy',$user->id) }}">
+                                    <form method="POST" action="{{ route('user.destroy',$users->id) }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-r" title="Delete">
+                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-r btn-delete" title="Delete">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                                 <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
                                             </svg>
@@ -58,7 +64,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{$users->links()}}
+                {{$user->links()}}
             </div>
         </div>
     </div>
