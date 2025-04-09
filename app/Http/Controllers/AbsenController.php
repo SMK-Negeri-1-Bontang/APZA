@@ -13,49 +13,53 @@ class AbsenController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    { 
-        $absen = Absen::with('jurusan')->paginate(5); 
-        return view('absen.index', compact('absen'));  
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $jurusans = Jurusan::all(); 
-        return view('absen.create', compact('jurusans')); 
-    }
+    
 
+
+
+     public function index()
+     {
+         $absen = Absen::all();
+         return view('absen.index', compact('absen'));
+     }
+
+
+
+     public function create()
+     {
+         $users = User::all();
+         $jurusans = Jurusan::all();
+         return view('absen.create', compact('users', 'jurusans'));
+     }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'jurusan_id' => 'required|integer|exists:jurusan,id',
-            'kelas' => 'required|string|max:255',
-            'nis' => 'required|numeric|exists:users,nis',
-        ]);
-
         $absen = new Absen();
-        $absen->nama = $validatedData['nama'];
-        $absen->jurusan_id = $validatedData['jurusan_id'];
-        $absen->kelas = $validatedData['kelas'];
-        $absen->nis = $validatedData['nis'];
+        $absen->user_id = $request->user_id;
+        $absen->jurusan_id = $request->jurusan_id;
         $absen->save();
 
-        return redirect()->route('absen.index')->with('success', 'Absen berhasil ditambahkan!');
+        return redirect()->route('absen.index')->with('success', 'Absen created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         $absen = Absen::with('jurusan')->findOrFail($id);
         return view('absen.show', compact('absen'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $absen = Absen::findOrFail($id);
+        return view('absen.edit', compact('absen'));
     }
 }

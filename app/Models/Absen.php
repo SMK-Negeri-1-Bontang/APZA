@@ -9,8 +9,16 @@ class Absen extends Model
     protected $table = 'absen';
 
     protected $fillable = [
-        'name',
-        'jurusan',
-        'kelas',
+        'user_id',
+        'jurusan_id',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class);
+    }
 }
