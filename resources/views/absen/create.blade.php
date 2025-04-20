@@ -10,6 +10,12 @@
                     <form method="POST" action="{{ route('absen.store') }}">
                         @csrf
                         
+
+
+                  
+
+
+                        
                         <div class="row mb-3">
                             <label for="user_id" class="col-md-4 col-form-label text-md-end">{{ __('User') }}</label>
                             <div class="col-md-6">

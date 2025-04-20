@@ -32,9 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/absen/create', [AbsenController::class, 'create'])->name('absen.create');
     Route::post('/absen', [AbsenController::class, 'store'])->name('absen.store');
     Route::get('/absen/{absen}', [AbsenController::class, 'show'])->name('absen.show');
-    Route::get('/absen/{absen}/edit', [AbsenController::class, 'edit'])->name('absen.edit');
-    Route::patch('/absen/{absen}', [AbsenController::class, 'update'])->name('absen.update');
-    Route::delete('/absen/{absen}', [AbsenController::class, 'destroy'])->name('absen.destroy');
+    Route::get('/absen/edit/{user_id}', [AbsenController::class, 'edit'])->name('absen.edit');
+    Route::patch('/absen/update/{user_id}', [AbsenController::class, 'update'])->name('absen.update');
+    Route::delete('/absen/{id}', [AbsenController::class, 'destroy'])->name('absen.destroy');
 
 Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
 Route::get('/jurusan/create', [JurusanController::class, 'create'])->name('jurusan.create');
