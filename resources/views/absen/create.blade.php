@@ -2,9 +2,10 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
+<div class="container mx-auto p-4">
+    <div class="flex justify-center">
+        <div class="w-full lg:w-250 xl:w-250 p-6 bg-white rounded shadow-md">
+            <div class=" mb-4">
                 <div class="card-header">Tambah User</div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('absen.store') }}">
@@ -31,22 +32,7 @@
                                 @enderror
                             </div>
                         </div>
-<!-- 
-                        <div class="row mb-3">
-                            <label for="jurusan_id" class="col-md-4 col-form-label text-md-end">{{ __('Nama Jurusan dan kelas ') }}</label>
-                            <div class="col-md-6">
-                                <select id="jurusan_id" name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror" required>
-                                    @foreach($jurusans as $jurusan)
-                                        <option value="{{ $jurusan->id }}">{{ $jurusan->nama_jurusan }} - {{ $jurusan->kelas }}</option>
-                                    @endforeach
-                                </select>
-                                @error('jurusan_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> -->
+
                         
                         <div class="row mb-3">
                             <label for="jurusan_id" class="col-md-4 col-form-label text-md-end">{{ __('Jurusan') }}</label>
@@ -62,17 +48,53 @@
                                     </span>
                                 @enderror
                             </div>
+                        </div> 
+
+                        <div class="row mb-3">
+                            <label for="kehadiran" class="col-md-4 col-form-label text-md-end">{{ __('Kehadiran') }}</label>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="kehadiran" id="hadir" value="Hadir" required>
+                                    <label class="form-check-label" for="hadir">
+                                        Hadir
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="kehadiran" id="tidakHadir" value="Tidak Hadir" required>
+                                    <label class="form-check-label" for="tidakHadir">
+                                        Tidak Hadir
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="kehadiran" id="tidakHadir" value="Tidak Hadir" required>
+                                    <label class="form-check-label" for="tidakHadir">
+                                        Izin
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="kehadiran" id="tidakHadir" value="Tidak Hadir" required>
+                                    <label class="form-check-label" for="tidakHadir">
+                                        Tidak ada keterangan
+                                    </label>
+                                </div>
+                                @error('kehadiran')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
+
 
                
 
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <a class="btn btn-link" href="{{ route('login') }}">
+                                <a href="{{ route('login') }}" class="text-blue-500 hover:text-blue-700">
                                     {{ __('Already registered?') }}
                                 </a>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                     {{ __('Register') }}
                                 </button>
                             </div>

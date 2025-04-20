@@ -18,8 +18,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('jurusan_id');
             $table->foreign('jurusan_id')->references('id')->on('jurusan')->onDelete('cascade');
-
-           
+            $table->enum('kehadiran', ['Hadir', 'Tidak Hadir', 'Izin', 'Tidak ada keterangan'])->default('Tidak ada keterangan');
             $table->timestamps();
         });
     }

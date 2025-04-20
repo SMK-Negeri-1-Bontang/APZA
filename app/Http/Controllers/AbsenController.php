@@ -37,11 +37,13 @@ class AbsenController extends Controller
         $validatedData = $request->validate([
             'user_id' => 'required|integer',
             'jurusan_id' => 'required|integer',
+            'kehadiran' => 'required|in:Hadir,Tidak Hadir,Izin,Tidak ada keterangan',
         ]);
 
         $absen = new Absen();
         $absen->user_id = $validatedData['user_id'];
         $absen->jurusan_id = $validatedData['jurusan_id'];
+        $absen->kehadiran = $validatedData['kehadiran'];
         $absen->save();
 
         return redirect()->route('absen.index')->with('success', 'Absen created successfully.');
@@ -65,8 +67,25 @@ class AbsenController extends Controller
         $users = User::all();
         $jurusans = Jurusan::all();
         return view('absen.edit', compact('absen', 'users', 'jurusans'));
+    }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $user_id) 
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required|integer',
+            'jurusan_id' => 'required|integer',
+            'kehadiran' => 'required|in:Hadir,Tidak Hadir,Izin,Tidak ada keterangan',
+        ]);
 
+        $absen = Absen::where('user_id', $user_id)->firstOrFail();
+        $absen->user_id = $validatedData['user_id'];
+        $absen->jurusan_id = $validatedData['jurusan_id'];
+        $absen->kehadiran = $validatedData['kehadiran'];
+        $absen->save();
 
+        return redirect()->route('absen.index')->with('success', 'Absen updated successfully.');
     }
     /**
      * Remove the specified resource from storage.
@@ -79,4 +98,3 @@ class AbsenController extends Controller
         return redirect()->route('absen.index')->with('success', 'Absen deleted successfully.');
     }
 }
-

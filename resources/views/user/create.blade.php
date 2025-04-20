@@ -2,9 +2,11 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
+<div class="row justify-content-center">
+    <div class="container mx-auto p-4">
+    <div class="flex justify-center">
+        <div class="w-full lg:w-250 xl:w-250 p-6 bg-white rounded shadow-md">
+            <div class=" mb-4">
                 <div class="card-header">Tambah User</div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('user.store') }}">
@@ -90,10 +92,10 @@
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <a class="btn btn-link" href="{{ route('login') }}">
+                                <a class="inline-block bg-transparent text-blue-500 hover:text-blue-700 text-sm py-2 px-4 border border-blue-500 hover:border-blue-700 rounded text-left" href="{{ route('login') }}">
                                     {{ __('Already registered?') }}
                                 </a>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="inline-block bg-blue-500 hover:bg-blue-700 text-white text-sm py-2 px-4 border border-blue-500 hover:border-blue-700 rounded">
                                     {{ __('Register') }}
                                 </button>
                             </div>
