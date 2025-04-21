@@ -41,12 +41,12 @@
  
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">{{ __('Password') }}</label>
-                    <input type="password" name="password" class="form-input w-full border rounded px-3 py-2" required>
+                    <input type="password" name="password" class="form-input w-full border rounded px-3 py-2" placeholder="Leave blank if not changing">
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">{{ __('Confirm Password') }}</label>
-                    <input type="password" name="password_confirmation" class="form-input w-full border rounded px-3 py-2" required>
+                    <input type="password" name="password_confirmation" class="form-input w-full border rounded px-3 py-2" placeholder="Leave blank if not changing">
                 </div>
 
                 <input type="submit" value="{{ __('Update Profile') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">

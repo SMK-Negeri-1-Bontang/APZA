@@ -1,15 +1,19 @@
 <nav class="h-full px-4 py-6 space-y-2 text-sm">
     <div class="text-2xl font-bold mb-6">My App</div>
-
-
-    <x-nav-link :href="route('profile.index')" :active="request()->routeIs('profile.index')"
-        class="flex items-center space-x-2 px-3 py-2 rounded-md transition hover:bg-gray-100 dark:hover:bg-gray-700"
-    >
-        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6M4 15h16v6H4v-6z"/>
-        </svg>
-        <span>{{ __('profile') }}</span>
-    </x-nav-link>
+    <div class="flex justify-center">
+        <x-nav-link :href="route('profile.index')" :active="request()->routeIs('profile.index')"
+            class="flex items-center space-x-2 px-4 py-3 rounded-md transition hover:bg-gray-100 dark:hover:bg-gray-700 text-lg font-semibold"
+        >
+            @if(Auth::user()->profile_picture)
+                <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" class="w-10 h-10 rounded-full">
+            @else
+                <svg class="w-10 h-10 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6M4 15h16v6H4v-6z"/>
+                </svg>
+            @endif
+            <span>{{ __('profile') }}</span>
+        </x-nav-link>
+    </div>
 
 
     
