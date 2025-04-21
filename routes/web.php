@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsenController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KehadiranChartController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,6 +37,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/absen/edit/{user_id}', [AbsenController::class, 'edit'])->name('absen.edit');
     Route::patch('/absen/update/{user_id}', [AbsenController::class, 'update'])->name('absen.update');
     Route::delete('/absen/{id}', [AbsenController::class, 'destroy'])->name('absen.destroy');
+
+ 
+
+Route::get('/kehadiran-chart', [KehadiranChartController::class, 'index'])->name('kehadiran.chart');
+
+
 
 Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
 Route::get('/jurusan/create', [JurusanController::class, 'create'])->name('jurusan.create');

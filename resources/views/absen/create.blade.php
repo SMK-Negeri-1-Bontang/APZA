@@ -66,14 +66,14 @@
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="kehadiran" id="tidakHadir" value="Tidak Hadir" required>
-                                    <label class="form-check-label" for="tidakHadir">
+                                    <input class="form-check-input" type="radio" name="kehadiran" id="izin" value="Izin" required>
+                                    <label class="form-check-label" for="izin">
                                         Izin
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="kehadiran" id="tidakHadir" value="Tidak Hadir" required>
-                                    <label class="form-check-label" for="tidakHadir">
+                                    <input class="form-check-input" type="radio" name="kehadiran" id="tidakAdaKeterangan" value="Tidak ada keterangan" required>
+                                    <label class="form-check-label" for="tidakAdaKeterangan">
                                         Tidak ada keterangan
                                     </label>
                                 </div>

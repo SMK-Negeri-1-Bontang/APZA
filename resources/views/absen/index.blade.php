@@ -6,9 +6,15 @@
         <div class="w-full lg:w-250 xl:w-250 p-6 bg-white rounded shadow-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg font-bold">{{ __('Absen') }}</h2>
-                <a href="{{Route('absen.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    <i class="fa fa-plus"></i>Tambah Absen
-                </a>
+                <div class="flex justify-end">
+                    <a href="{{Route('absen.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                        <i class="fa fa-plus"></i>Tambah Absen
+                    </a>
+                    <a href="{{Route('kehadiran.chart')}}" class="bg-green-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                        <i class="fa fa-plus"></i>Grafik Kehadiran
+                    </a>
+                </div>
+               
             </div>
 
             @if($message =Session::get('success'))

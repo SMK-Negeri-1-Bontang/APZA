@@ -97,4 +97,9 @@ class AbsenController extends Controller
 
         return redirect()->route('absen.index')->with('success', 'Absen deleted successfully.');
     }
+    
+    /**
+     * Display the chart for absen.
+     */
+ 
 }
