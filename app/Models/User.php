@@ -60,4 +60,9 @@ public function isUser()
 {
     return $this->hasRole()->Where('role','user')->exists();
 }
+public function absens()
+{
+    return $this->hasMany(Absen::class);
+}
+
 }
