@@ -11,6 +11,7 @@ class Absen extends Model
     protected $fillable = [
         'user_id',
         'jurusan_id',
+        'kehadiran',
     ];
     public function user()
     {

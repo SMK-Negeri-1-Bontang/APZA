@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsenController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KehadiranChartController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,7 +16,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
@@ -35,6 +37,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/absen/edit/{user_id}', [AbsenController::class, 'edit'])->name('absen.edit');
     Route::patch('/absen/update/{user_id}', [AbsenController::class, 'update'])->name('absen.update');
     Route::delete('/absen/{id}', [AbsenController::class, 'destroy'])->name('absen.destroy');
+
+ 
+
+Route::get('/kehadiran-chart', [KehadiranChartController::class, 'index'])->name('kehadiran.chart');
+
+
 
 Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
 Route::get('/jurusan/create', [JurusanController::class, 'create'])->name('jurusan.create');
