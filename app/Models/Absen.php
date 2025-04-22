@@ -22,4 +22,10 @@ class Absen extends Model
     {
         return $this->belongsTo(Jurusan::class);
     }
+
+    public function laporanIzin()
+{
+    return $this->hasOne(LaporanIzin::class);
+}
+
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Absen;
 use App\Models\Jurusan;
 use App\Models\User;
+use App\Models\LaporanIzin;
 use Exception;
 
 class AbsenController extends Controller
@@ -25,8 +26,8 @@ class AbsenController extends Controller
     public function create()
     {
         $users = User::all();
-        $jurusans = Jurusan::all();
-        return view('absen.create', compact('users', 'jurusans'));
+        $jurusan = Jurusan::all();
+        return view('absen.create', compact('users', 'jurusan'));
     }
 
     /**
@@ -34,19 +35,37 @@ class AbsenController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'user_id' => 'required|integer',
-            'jurusan_id' => 'required|integer',
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'jurusan_id' => 'required|exists:jurusan,id',
             'kehadiran' => 'required|in:Hadir,Tidak Hadir,Izin,Tidak ada keterangan',
+            'alasan' => 'required_if:kehadiran,Izin',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $absen = new Absen();
-        $absen->user_id = $validatedData['user_id'];
-        $absen->jurusan_id = $validatedData['jurusan_id'];
-        $absen->kehadiran = $validatedData['kehadiran'];
-        $absen->save();
+        // Simpan absen dulu
+        $absen = Absen::create([
+            'user_id' => $request->user_id,
+            'jurusan_id' => $request->jurusan_id,
+            'kehadiran' => $request->kehadiran,
+        ]);
 
-        return redirect()->route('absen.index')->with('success', 'Absen created successfully.');
+        // Kalau "Izin", simpan juga ke laporan_izins
+        if ($request->kehadiran === 'Izin') {
+            $buktiPath = null;
+
+            if ($request->hasFile('bukti')) {
+                $buktiPath = $request->file('bukti')->store('bukti_izin', 'public');
+            }
+
+            LaporanIzin::create([
+                'absen_id' => $absen->id,
+                'alasan' => $request->alasan,
+                'bukti' => $buktiPath,
+            ]);
+        }
+
+        return redirect()->route('absen.index')->with('success', 'Absen berhasil disimpan');
     }
 
     /**
@@ -65,28 +84,55 @@ class AbsenController extends Controller
     {
         $absen = Absen::findOrFail($id);
         $users = User::all();
-        $jurusans = Jurusan::all();
-        return view('absen.edit', compact('absen', 'users', 'jurusans'));
+        $jurusan = Jurusan::all();
+        return view('absen.edit', compact('absen', 'users', 'jurusan'));
     }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $user_id) 
+    public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'user_id' => 'required|integer',
-            'jurusan_id' => 'required|integer',
-            'kehadiran' => 'required|in:Hadir,Tidak Hadir,Izin,Tidak ada keterangan',
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'jurusan_id' => 'required|exists:jurusan,id',
+            'kehadiran' => 'required',
+            'alasan' => 'required_if:kehadiran,Izin',
+            'bukti' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048'
         ]);
 
-        $absen = Absen::where('user_id', $user_id)->firstOrFail();
-        $absen->user_id = $validatedData['user_id'];
-        $absen->jurusan_id = $validatedData['jurusan_id'];
-        $absen->kehadiran = $validatedData['kehadiran'];
+        $absen = Absen::findOrFail($id);
+        $absen->user_id = $request->user_id;
+        $absen->jurusan_id = $request->jurusan_id;
+        $absen->kehadiran = $request->kehadiran;
         $absen->save();
 
-        return redirect()->route('absen.index')->with('success', 'Absen updated successfully.');
+        // Cek apakah statusnya Izin
+        if ($request->kehadiran === 'Izin') {
+            // Cek apakah sudah ada laporan izin untuk absen ini
+            $laporan = LaporanIzin::where('absen_id', $absen->id)->first();
+
+            if (!$laporan) {
+                $laporan = new LaporanIzin();
+                $laporan->absen_id = $absen->id;
+            }
+
+            $laporan->alasan = $request->alasan;
+
+            // Simpan file bukti jika ada
+            if ($request->hasFile('bukti')) {
+                $path = $request->file('bukti')->store('bukti', 'public');
+                $laporan->bukti = $path;
+            }
+
+            $laporan->save();
+        } else {
+            // Jika kehadiran bukan "Izin", hapus laporan izin jika ada
+            LaporanIzin::where('absen_id', $absen->id)->delete();
+        }
+
+        return redirect()->route('absen.index')->with('success', 'Absen berhasil diperbarui.');
     }
+
     /**
      * Remove the specified resource from storage.
      */
