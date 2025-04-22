@@ -1,60 +1,46 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <div class="flex justify-center">
-        <div class="w-full lg:w-250 xl:w-250 p-6 bg-white rounded shadow-md">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold">{{ __('Jurusan') }}</h2>
-                <a href="{{Route('jurusan.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    <i class="fa fa-plus"></i>Tambah Jurusan
-                </a>
-            </div>
-
-            @if($message =Session::get('success'))
-            <div class="alert alert-success" role="alert">
-                <strong>{{$message}}</strong>
-            </div>
+<div class="overflow-x-auto rounded-lg shadow">
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+        <thead class="bg-gray-50">
+            <tr class="text-left text-sm font-semibold text-gray-700">
+                <th class="px-6 py-3 border-b border-gray-200">No.</th>
+                <th class="px-6 py-3 border-b border-gray-200">Nama</th>
+                <th class="px-6 py-3 border-b border-gray-200">Kelas</th>
+                <th class="px-6 py-3 border-b border-gray-200">Aksi</th>
+            </tr>
+        </thead>
+        <tbody class="text-sm text-gray-700">
+            @if(isset($jurusan))
+                @foreach($jurusan as $jrs)
+                <tr class="hover:bg-gray-100 transition duration-150">
+                    <td class="px-6 py-4 border-b border-gray-200">{{$loop->iteration}}</td>
+                    <td class="px-6 py-4 border-b border-gray-200">{{$jrs->nama_jurusan}}</td>
+                    <td class="px-6 py-4 border-b border-gray-200">{{$jrs->kelas}}</td>
+                    <td class="px-6 py-4 border-b border-gray-200">
+                        <a href="{{Route('jurusan.edit', $jrs->id)}}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1.5 px-4 rounded-lg mr-2 transition">
+                            <i class="fa fa-edit mr-1"></i>Edit
+                        </a>
+                        <form action="{{Route('jurusan.destroy', $jrs->id)}}" method="POST" class="inline-block">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete bg-red-500 hover:bg-red-600 text-white font-semibold py-1.5 px-4 rounded-lg transition">
+                                <i class="fa fa-trash mr-1"></i>Hapus
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
             @endif
-
-            <div class="overflow-x-auto">
-                <table class="table-auto w-full">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2">No.</th>
-                            <th class="px-4 py-2">Nama</th>
-                            <th class="px-4 py-2">Kelas</th>
-                            <th class="px-4 py-2">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(isset($jurusan))
-                            @foreach($jurusan as $jrs)
-                            <tr>
-                                <td class="border px-4 py-2">{{$loop->iteration}}</td>
-                                <td class="border px-4 py-2">{{$jrs->nama_jurusan}}</td>
-                                <td class="border px-4 py-2">{{$jrs->kelas}}</td>
-                                <td class="border px-4 py-2">
-                                    <a href="{{Route('jurusan.edit', $jrs->id)}}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
-                                        <i class="fa fa-edit"></i>Edit
-                                    </a>
-                                    <form action="{{Route('jurusan.destroy', $jrs->id)}}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-delete">
-                                            <i class="fa fa-trash"></i>Hapus
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-                @if(isset($jurusan))
-                    {{$jurusan->links()}}
-                @endif
-            </div>
+        </tbody>
+    </table>
+    @if(isset($jurusan))
+        <div class="mt-4">
+            {{$jurusan->links()}}
+        </div>
+    @endif
+</div>
         </div>
     </div>
 </div>
