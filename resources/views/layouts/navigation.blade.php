@@ -23,6 +23,7 @@
             ['label' => 'User', 'route' => 'user.index', 'icon' => 'user'],
             ['label' => 'Absen', 'route' => 'absen.index', 'icon' => 'calendar'],
             ['label' => 'Jurusan', 'route' => 'jurusan.index', 'icon' => 'academic-cap'],
+            ['label' => 'Laporan Izin', 'route' => 'izin.index', 'icon' => 'file-document'],
         ];
     @endphp
 
@@ -39,6 +40,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10m-4 4h4m-9 4h4M5 3h14a2 2 0 012 2v16a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/>
                 @elseif($item['icon'] === 'academic-cap')
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6"/>
+                @elseif($item['icon'] === 'file-document')
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l2-2m-4 0a2 2 0 012-2V5a2 2 0 012 2h3l2 2v1a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/>
                 @endif
             </svg>
             <span>{{ __($item['label']) }}</span>

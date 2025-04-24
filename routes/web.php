@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KehadiranChartController;
-
+use App\Http\Controllers\LaporanIzinController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -51,6 +51,18 @@ Route::get('/jurusan/{jurusan}', [JurusanController::class, 'show'])->name('juru
 Route::get('/jurusan/edit/{id}', [JurusanController::class, 'edit'])->name('jurusan.edit');
 Route::patch('/jurusan/update/{id}', [JurusanController::class, 'update'])->name('jurusan.update');
 Route::delete('/jurusan/{jurusan}', [JurusanController::class, 'destroy'])->name('jurusan.destroy');
+
+Route::get('/laporan-izin', [LaporanIzinController::class, 'index'])->name('izin.index');
+
+Route::get('/absen/{id}/edit', [AbsenController::class, 'edit'])->name('absen.edit');
+
+Route::patch('/izin/update/{id}', [LaporanIzinController::class, 'update'])->name('izin.update');
+Route::delete('/izin/{id}', [LaporanIzinController::class, 'destroy'])->name('izin.destroy');
+
+Route::get('/izin/{id}/show', [LaporanIzinController::class, 'show'])->name('izin.show');
+
+
+
 });
 
 require __DIR__.'/auth.php';

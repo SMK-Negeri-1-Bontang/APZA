@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
-
     public function index()
     {
         return view('profile.index', ['user' => Auth::user()]);
     }
+
     public function edit()
     {
         return view('profile.edit', ['user' => Auth::user()]);
@@ -39,8 +40,8 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-  
-    return redirect()->route('profile.index')->with('success', 'Profile updated successfully!');
-    
+        return redirect()->route('profile.index')->with('success', 'Profile updated successfully!');
     }
+
+   
 }

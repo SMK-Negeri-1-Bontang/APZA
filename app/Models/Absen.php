@@ -13,6 +13,8 @@ class Absen extends Model
         'jurusan_id',
         'kehadiran',
     ];
+
+    
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -22,4 +24,11 @@ class Absen extends Model
     {
         return $this->belongsTo(Jurusan::class);
     }
+
+    public function laporanIzin()
+{
+    return $this->hasOne(LaporanIzin::class);
+}
+
+
 }
