@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use App\Models\Role;
+use Exception;
 
 class ProfileController extends Controller
 {
@@ -25,9 +27,11 @@ class ProfileController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'nama_lengkap' => 'required|string|max:255',
             'nis' => 'required|string|max:50',
             'email' => 'required|email',
             'profile_picture' => 'nullable|image|max:2048',
+            'role' => 'required|string|max:50',
         ]);
 
         if ($request->hasFile('profile_picture')) {
@@ -39,6 +43,18 @@ class ProfileController extends Controller
         }
 
         $user->update($validated);
+
+        // Update role
+        $role = Role::where('user_id', $user->id)->first();
+        if ($role) {
+            $role->role = $request->role;
+            $role->save();
+        } else {
+            $role = new Role;
+            $role->user_id = $user->id;
+            $role->role = $request->role;
+            $role->save();
+        }
 
         return redirect()->route('profile.index')->with('success', 'Profile updated successfully!');
     }

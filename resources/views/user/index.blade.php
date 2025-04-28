@@ -23,20 +23,20 @@
                         <tr>
                             <th class="px-4 py-2">No.</th>
                             <th class="px-4 py-2">Nama Lengkap</th>
-                            <th class="px-4 py-2">Email</th>
-                            <th class="px-4 py-2">Level</th>
+                            
                             <th class="px-4 py-2">NIS</th>
                             <th class="px-4 py-2">Aksi</th>
+                            <th class="px-4 py-2">Email</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($user as $users)
                         <tr>
                             <td class="border px-4 py-2">{{$loop->iteration}}</td>
-                            <td class="border px-4 py-2">{{$users->name}}</td>
-                            <td class="border px-4 py-2">{{$users->email}}</td>
-                            <td class="border px-4 py-2">{{ucfirst($users->hasRole()->value('role'))}}</td>
+                            <td class="border px-4 py-2">{{$users->nama_lengkap}}</td>
+                           
                             <td class="border px-4 py-2">{{$users->nis}}</td>
+                            <td class="border px-4 py-2">{{$users->email}}</td>
                             <td class="border px-4 py-2">
                                 <div class="flex justify-center">
                                     <a href="{{route('user.edit',$users->id)}}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" title="Edit">

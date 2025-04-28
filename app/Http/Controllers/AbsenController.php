@@ -65,7 +65,7 @@ class AbsenController extends Controller
             ]);
         }
 
-        return redirect()->route('absen.index')->with('success', 'Absen berhasil disimpan');
+        return redirect()->route('welcome')->with('success', 'Absen berhasil disimpan');
     }
 
     /**

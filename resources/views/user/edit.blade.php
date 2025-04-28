@@ -50,7 +50,7 @@
                         <div class="row mb-3">
                             <label for="nis" class="col-md-4 col-form-label text-md-end">{{ __('NIS') }}</label>
                             <div class="col-md-6">
-                                <input id="nis" type="text" value="{{ $user->nis }}" class="form-control @error('nis') is-invalid @enderror" name="nis" value="{{ old('nis') }}" required autocomplete="nis">
+                                <input id="nis" type="text" value="{{ $user->nis }}" class="form-control @error('nis') is-invalid @enderror" name="nis" value="{{ old('nis') }}" required autocomplete="nis" autofocus>
                                 @error('nis')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -73,13 +73,13 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('Level') }}</label>
+                            <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('Role') }}</label>
                             <div class="col-md-6">
-                                <select id="role" name="role" class="form-control @error('role') is-invalid @enderror" required>
-                                    <option value="{{ $user->hasRole()->value('role') }}">{{ ucfirst($user->hasRole()->value('role')) }}</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="petugas">Petugas</option>
-                                    <option value="user">User</option>
+                                <select id="role" class="form-control @error('role') is-invalid @enderror" name="role" required>
+                                    <option value="">Select Role</option>
+                                    <option value="admin" @selected($user->role->role == 'admin')>Admin</option>
+                                    <option value="user" @selected($user->role->role == 'user')>User</option>
+                                    <option value="petugas" @selected($user->role->role == 'petugas')>Petugas</option>
                                 </select>
                                 @error('role')
                                     <span class="invalid-feedback" role="alert">

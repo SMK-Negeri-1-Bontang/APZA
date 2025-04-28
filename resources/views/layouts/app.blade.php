@@ -19,6 +19,8 @@
 <body class="bg-gray-100 dark:bg-gray-900 font-sans antialiased text-black">
     <div x-data="{ sidebarOpen: true }" class="flex h-screen overflow-hidden">
 
+       
+
         <!-- Sidebar -->
         <div :class="sidebarOpen ? 'w-64' : 'w-0'" 
              class="transition-all duration-200 ease-in-out bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -42,8 +44,12 @@
                 <h1 class="text-xl font-semibold text-gray-800 dark:text-white">{{ config('app.name', 'Laravel') }}</h1>
             </div>
 
+            
+
             <!-- Page Heading -->
             @isset($header)
+
+            
                 <header class="bg-white dark:bg-gray-800 shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}

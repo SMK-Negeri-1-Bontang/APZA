@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'profile_picture',
+      
     ];
 
     /**
@@ -48,21 +49,36 @@ class User extends Authenticatable
         ];
     }
 
-    public function hasRole(): HasOne
+    //untuk absen
+    public function absens()
     {
-        return $this->hasOne(Role::class);
+        return $this->hasMany(Absen::class);
     }
+
+    // Method to get the user's role
+    public function role()
+    {
+        return $this->hasOne(Role::class); // Menyesuaikan dengan relasi yang benar
+    }
+
+    // Method to check if the user has a specific role
+    public function hasRole($roleName)
+    {
+        return $this->role && $this->role->role === $roleName;
+    }
+
     public function isAdmin()
     {
-        return $this->hasRole()->Where('role','admin')->exists();
+        return $this->role && $this->role->role === 'admin';
     }
-public function isUser()
-{
-    return $this->hasRole()->Where('role','user')->exists();
-}
-public function absens()
-{
-    return $this->hasMany(Absen::class);
-}
 
+    public function isUser()
+    {
+        return $this->role && $this->role->role === 'user';
+    }
+
+    public function isPetugas()
+    {
+        return $this->role && $this->role->role === 'petugas';
+    }
 }

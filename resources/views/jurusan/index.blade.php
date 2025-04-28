@@ -3,6 +3,9 @@
 @section('content')
 <div class="overflow-x-auto rounded-lg shadow">
     <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+    <a href="{{Route('jurusan.create')}}" class="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold py-1.5 px-4 rounded-lg ml-2 transition">
+                            <i class="fa fa-plus mr-1"></i>Tambah Jurusan
+                        </a>
         <thead class="bg-gray-50">
             <tr class="text-left text-sm font-semibold text-gray-700">
                 <th class="px-6 py-3 border-b border-gray-200">No.</th>
@@ -29,6 +32,7 @@
                                 <i class="fa fa-trash mr-1"></i>Hapus
                             </button>
                         </form>
+                       
                     </td>
                 </tr>
                 @endforeach

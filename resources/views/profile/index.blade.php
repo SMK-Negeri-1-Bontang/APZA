@@ -25,17 +25,28 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
                 <div>
-                    <p class="font-semibold">Full Name</p>
-                    <p>{{ $user->name }}</p>
+                    <p class="font-semibold">Name</p>
+                    <p>{{ $user->name}}</p>
+                </div>
+
+                <div>
+                    <p class="font-semibold">Nama Lengkap</p>
+                    <p>{{ $user->nama_lengkap}}</p>
                 </div>
                 <div>
                     <p class="font-semibold">Email</p>
                     <p>{{ $user->email }}</p>
                 </div>
                 <div>
-                    <p class="font-semibold">Phone</p>
+                    <p class="font-semibold">NIS</p>
                     <p>{{ $user->nis }}</p>
                 </div>
+                <div>
+                    <p class="font-semibold">Role</p>
+                    <p>{{ $user->role->role}}</p>
+                </div>
+
+               
                 
                 <!-- Draw a line on the table -->
                 <hr class="w-full my-4 border-t border-gray-200">

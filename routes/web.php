@@ -1,5 +1,7 @@
 <?php
 
+
+    use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -11,9 +13,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+// Admin-only route
+Route::middleware(['auth', RoleMiddleware::class . ':admin'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return 'Selamat datang di dashboard admin!';
+    });
+});
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/', function () {
+    return view('welcome');
+})->middleware(['auth', 'verified'])->name('welcome');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

@@ -65,6 +65,8 @@
                             </div>
                         </div>
 
+                        
+
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-0">
                                 @if (Route::has('password.request'))
@@ -74,6 +76,16 @@
                                 @endif
                             </div>
                         </div>
+
+                    <div class="row mb-0">
+                        <div class="col-md-8 offset-md-0">
+                            @if (Route::has('register'))
+                                <a class="btn btn-link" href="{{ route('register') }}">
+                                    {{ __('Register') }}
+                                </a>
+                            @endif
+                        </div>
+                    </div>
                     </form>
                 </div>
             </div>

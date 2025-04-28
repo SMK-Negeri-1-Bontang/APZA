@@ -41,7 +41,7 @@ class UserController extends Controller
             'nama_lengkap' => 'required|unique:users|min:5',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5',
-            'role' => 'required',
+
             'nis' => 'required|numeric',
         ]);
 
@@ -52,6 +52,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'nis' => $request->nis,
+
             ]);
 
             if ($user) {
@@ -95,7 +96,6 @@ class UserController extends Controller
             'name' => 'required|min:5',
             'nama_lengkap' => 'required|min:5|unique:users,nama_lengkap,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required',
             'nis' => 'required|numeric',
         ]);
 
@@ -109,17 +109,17 @@ class UserController extends Controller
             if ($request->password != '') {
                 $user->password = Hash::make($request->password);
             }
+
             $user->save();
 
-            if ($user) {
-                $role = Role::where('user_id', $id)->first();
-                if ($role) {
-                    $role->role = $request->role;
-                } else {
-                    $role = new Role;
-                    $role->user_id = $user->id;
-                    $role->role = $request->role;
-                } 
+            $role = Role::where('user_id', $user->id)->first();
+            if ($role) {
+                $role->role = $request->role;
+                $role->save();
+            } else {
+                $role = new Role;
+                $role->user_id = $user->id;
+                $role->role = $request->role;
                 $role->save();
             }
         } catch (Exception $e) {
@@ -138,6 +138,7 @@ class UserController extends Controller
 
         try {
             $user->delete();
+            Role::where('user_id', $id)->delete(); // Remove associated role
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'User Gagal dihapus');
         }
