@@ -1,7 +1,8 @@
 <nav class="h-full w-64 bg-white dark:bg-gray-900 px-4 py-6 space-y-4 text-sm border-r dark:border-gray-700">
     {{-- Logo --}}
-    <div class="flex items-center justify-center mb-8">
-        <img src="{{ asset('storage/logo.png') }}" alt="Logo" class="w-16 h-16 rounded-full">
+    <div class="flex items-center gap-4 mb-8">
+        <img src="https://3.bp.blogspot.com/-gavKyb1tAbE/VjlxeyGbu7I/AAAAAAAAAXU/V0fTfHFIn5A/s1600/logo%2Bsmk1.jpg" alt="Logo" class="w-12 h-12 rounded-full shadow-md object-cover">
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white"> APZA</h1>
     </div>
 
     {{-- Profile Link --}}
