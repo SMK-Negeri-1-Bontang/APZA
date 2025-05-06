@@ -6,29 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Absen extends Model
 {
-    protected $table = 'absen';
+    protected $fillable = ['user_id', 'tanggal', 'status', 'kelas_id', 'jurusan_id'];
 
-    protected $fillable = [
-        'user_id',
-        'jurusan_id',
-        'kehadiran',
-    ];
-
-    
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
     }
 
     public function jurusan()
     {
         return $this->belongsTo(Jurusan::class);
-    }
+    }   
 
-    public function laporanIzin()
-{
-    return $this->hasOne(LaporanIzin::class);
-}
 
+   
 
 }
+
+

@@ -10,9 +10,12 @@ class CreateLaporanIzinsTable extends Migration
     {
         Schema::create('laporan_izins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('absen_id')->constrained('absen')->onDelete('cascade'); // relasi ke absen
+            $table->foreignId('absen_id')->constrained('absens')->onDelete('cascade');  
             $table->text('alasan');
             $table->string('bukti')->nullable(); // path file bukti (bisa gambar/surat/izin)
+            $table->enum('status', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
+            $table->text('catatan_verifikasi')->nullable();
+            $table->foreignId('diverifikasi_oleh')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

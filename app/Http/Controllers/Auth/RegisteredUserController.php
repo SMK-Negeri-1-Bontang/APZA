@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Jurusan;
+use App\Models\Kelas;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,51 +21,45 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create()
     {
-        $roles = Role::pluck('role', 'id');
-        return view('auth.register', compact('roles'));
+        $jurusans = Jurusan::all();
+        $kelas = Kelas::all();
+        
+        return view('auth.register', compact('jurusans', 'kelas'));
     }
 
+
     /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'nis' => ['required', 'string', 'max:255'],
-            'nama_lengkap' => ['required', 'string', 'max:255'],
+        $validatedData = $request->validate([
+            'nama_siswa' => 'required|string|max:255',
+            'nama_lengkap' => 'required|string|max:255|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:5',
+            'jurusan_id' => 'required|integer|exists:jurusans,id',
+            'kelas_id' => 'required|integer|exists:kelas,id',
+             'nis' => 'required|unique:users,nis,',
         ]);
 
-        try {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'nis' => $request->nis,
-                'nama_lengkap' => $request->nama_lengkap,
-                'role' => 'user', // Set role to 'user' by default
-            ]);
+        $user = User::create([
+            'nama_siswa' => $validatedData['nama_siswa'],
+            'nama_lengkap' => $validatedData['nama_lengkap'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'nis' => $validatedData['nis'],
+            'jurusan_id' => $validatedData['jurusan_id'],
+            'kelas_id' => $validatedData['kelas_id'],
+        ]);
 
-            if ($user) {
-                $role = new Role;
-                $role->user_id = $user->id;
-                $role->role = $request->role;
-                $role->save();
-            }
+        $role = Role::create([
+            'user_id' => $user->id,
+            'role' => 'siswa',
+        ]);
 
-            event(new Registered($user));
-
-            Auth::login($user);
-
-            return redirect(route('dashboard', absolute: false))->with('success', 'Data Berhasil Disimpan');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Data Gagal Disimpan');
-        }
+        return redirect()->route('profile.index')->with('success', 'Data Berhasil Disimpan');
     }
 }

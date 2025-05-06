@@ -24,12 +24,17 @@
     <ul class="space-y-2">
         @php
             $navItems = [
-                ['label' => 'Home', 'route' => 'welcome', 'icon' => 'home', 'roles' => ['admin', 'petugas', 'user']],
-                ['label' => 'Dashboard', 'route' => 'dashboard', 'icon' => 'home', 'roles' => ['admin', 'petugas', 'user']],
+                ['label' => 'Home', 'route' => 'welcome', 'icon' => 'home', 'roles' => ['admin', 'ketua_kelas', 'siswa']],
+                ['label' => 'Dashboard', 'route' => 'dashboard.index', 'icon' => 'home', 'roles' => ['admin', 'ketua_kelas', 'siswa']],
+                ['label' => 'Absen', 'route' => 'absen.create', 'icon' => 'calendar', 'roles' => ['admin', 'ketua_kelas', 'siswa']],
+                ['label' => 'Tampilkan Siswa', 'route' => 'absen.input', 'icon' => 'calendar', 'roles' => ['siswa', 'ketua_kelas', 'admin']],  
                 ['label' => 'User', 'route' => 'user.index', 'icon' => 'user', 'roles' => ['admin']],
-                ['label' => 'Absen', 'route' => 'absen.index', 'icon' => 'calendar', 'roles' => ['petugas', 'admin']],
-                ['label' => 'Jurusan', 'route' => 'jurusan.index', 'icon' => 'academic-cap', 'roles' => ['petugas', 'admin']],
-                ['label' => 'Laporan Izin', 'route' => 'izin.index', 'icon' => 'file-document', 'roles' => ['petugas', 'admin']],
+                ['label' => 'Absen', 'route' => 'absen.index', 'icon' => 'calendar', 'roles' => ['ketua_kelas', 'admin']],
+                ['label' => 'Jurusan', 'route' => 'jurusan.index', 'icon' => 'academic-cap', 'roles' => ['ketua_kelas', 'admin']],
+                ['label' => 'Laporan Izin', 'route' => 'izin.index', 'icon' => 'file-document', 'roles' => ['ketua_kelas', 'admin']],
+                ['label' => 'Riwayat Izin Saya', 'route' => 'izin.saya', 'icon' => 'file-document', 'roles' => ['ketua_kelas', 'admin']],
+                ['label' => 'Kelas', 'route' => 'kelas.index', 'icon' => 'academic-cap', 'roles' => ['admin']],
+
             ];
         @endphp
         @foreach($navItems as $item)
@@ -59,6 +64,11 @@
                         @case('academic-cap')
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M12 14l9-5-9-5-9 5 9 5zm0 0v6"/>
+                        @break
+
+                        @case('file-document')
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M7 8h10M7 12h4m1 8l2-2m-4 0a2 2 0 012-2V5a2 2 0 012 2h3l2 2v1a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/>
                         @break
 
                         @case('file-document')

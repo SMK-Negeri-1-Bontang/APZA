@@ -17,8 +17,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'nama_siswa',
         'nama_lengkap',
+        'jurusan_id',
+        'kelas_id',
         'nis',
         'email',
         'password',
@@ -72,13 +74,27 @@ class User extends Authenticatable
         return $this->role && $this->role->role === 'admin';
     }
 
-    public function isUser()
+    public function isSiswa()
     {
-        return $this->role && $this->role->role === 'user';
+        return $this->role && $this->role->role === 'siswa';
     }
 
-    public function isPetugas()
+    public function isKetuaKelas()
     {
-        return $this->role && $this->role->role === 'petugas';
+        return $this->role && $this->role->role === 'ketua_kelas';
     }
+    public function kelas()
+{
+    return $this->belongsTo(Kelas::class);
+}
+
+public function jurusan()
+{
+    return $this->belongsTo(Jurusan::class);
+}
+
+
+
+
+
 }

@@ -1,100 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <div class="flex justify-center">
-        <div class="w-full lg:w-250 xl:w-250 p-6 bg-white rounded shadow-md">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold">{{ __('Absen') }}</h2>
-                <div class="flex justify-end">
-                    <a href="{{Route('absen.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-                        <i class="fa fa-plus"></i>Tambah Absen
-                    </a>
-                    <a href="{{Route('kehadiran.chart')}}" class="bg-green-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                        <i class="fa fa-plus"></i>Grafik Kehadiran
-                    </a>
+<div class="flex gap-5 bg-gray-200 p-5">
+    {{-- Kolom 1: Jurusan --}}
+    <div class="w-1/4 bg-white rounded-lg p-5">
+        <h4 class="mb-4">Jurusan</h4>
+        @foreach($jurusans as $jurusan)
+            <a href="{{ route('absen.index', ['jurusan_id' => $jurusan->id]) }}" class="btn btn-success mb-2">
+                <div class="mb-2.5 p-2.5 bg-gray-200 rounded-lg text-center">
+                    {{ $jurusan->nama_jurusan }}
                 </div>
-               
-            </div>
+            </a>
+        @endforeach
+    </div>
 
-            @if($message =Session::get('success'))
-            <div class="alert alert-success" role="alert">
-                <strong>{{$message}}</strong>
-            </div>
-            @endif
+    {{-- Kolom 2: Kelas --}}
+    <div class="w-1/4 bg-white rounded-lg p-5">
+        <h4 class="mb-4">Kelas</h4>
+        @if(!empty($kelas))
+            @foreach($kelas as $kelas)
+                <a href="{{ route('absen.index', ['jurusan_id' => $selectedJurusan, 'kelas_id' => $kelas->id]) }}" class="btn btn-success mb-2">
+                    <div class="mb-2.5 p-2.5 bg-gray-200 rounded-lg text-center">
+                        {{ $kelas->nama_kelas }}
+                    </div>
+                </a>
+            @endforeach
+        @else
+            <p>Pilih jurusan untuk melihat kelas.</p>
+        @endif
+    </div>
 
-            <div class="overflow-x-auto">
-                <table class="table-auto w-full">
-                    <thead class="bg-gray-100">
+    {{-- Kolom 3: Absensi --}}
+    <div class="w-2/4 bg-white rounded-lg p-5">
+        <h4 class="mb-4">Data Absensi</h4>
+        @if(!empty($absen) && count($absen) > 0)
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th>Nama</th>
+                        <th>Status</th>
+                        <th>Tanggal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($absen as $absen)
                         <tr>
-                            <th class="px-4 py-2">No.</th>
-                            <th class="px-4 py-2">Nama</th>
-                            <th class="px-4 py-2">Jurusan</th>
-                            <th class="px-4 py-2">Kelas</th>
-                            <th class="px-4 py-2">Tanggal</th>
-                            <th class="px-4 py-2">Kehadiran</th>
-                            <th class="px-4 py-2">Aksi</th>
+                            <td>{{ $absen->user->nama_siswa }}</td>
+                            <td>{{ $absen->status }}</td>
+                            <td>{{ \Carbon\Carbon::parse($absen->tanggal)->format('d M Y') }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @if(isset($absen))
-                            @foreach($absen as $abs)
-                            <tr>
-                                <td class="border px-4 py-2">{{$loop->iteration}}</td>
-                                <td>{{$abs->user->name}}</td>
-                                <td>{{$abs->jurusan->nama_jurusan}}</td>
-                                <td>{{$abs->jurusan->kelas}}</td>
-                                <td>{{$abs->kehadiran}}</td>
-                                <td>{{ \Carbon\Carbon::parse($abs->tanggal)->format('d-m-Y') }}</td>
-
-                                <td class="border px-4 py-2">
-                                <div class="flex justify-center">
-                                    <a href="{{route('absen.edit',$abs->id)}}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" title="Edit">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.813z"/>
-                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                        </svg>
-                                    </a>
-                                        <form method="POST" action="{{ route('absen.destroy',$abs->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-r btn-delete" title="Delete">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
-                               </td>
-                            </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-                @if(method_exists($absen, 'links'))
-                    {{$absen->links()}}
-                @endif
-            </div>
-        </div>
+                    @endforeach
+                </tbody>
+            </table>
+        @elseif($selectedKelas)
+            <p>Tidak ada data absensi untuk kelas ini.</p>
+        @else
+            <p>Pilih jurusan dan kelas untuk melihat absensi.</p>
+        @endif
     </div>
 </div>
-<script type="text/javascript">
-$(".btn-delete").click(function(e){
-    e.preventDefault();
-    var form = $(this).parents("form");
-    Swal.fire({
-        title: "Konfirmasi Hapus Absen",
-        text: "Apakah Anda Yakin Akan Menghapus Absen ini?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, Hapus!"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            form.submit();
-        }
-    });
-});
-</script>
 @endsection

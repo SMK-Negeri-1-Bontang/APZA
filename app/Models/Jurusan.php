@@ -9,19 +9,38 @@ class Jurusan extends Model
 {
     use HasFactory;
 
-    protected $table = 'jurusan';
+    protected $table = 'jurusans';
 
-    protected $fillable = [
-        'nama_jurusan',
-        'kelas',
-    ];
+    protected $fillable = ['nama_jurusan'];
 
-    protected static function booted()
+  
+    public function absen()
     {
-        static::updated(function ($model) {
-            // This is a placeholder for any additional logic you might need to execute after a model is updated.
-            // Since the error message indicates the PUT method is not supported, this might be related to routing or controller logic.
-            // This section is not directly related to the model itself but rather how it's being used in the application.
-        });
+        return $this->hasMany(Absen::class);
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function laporanIzin()
+    {
+        return $this->hasMany(LaporanIzin::class);
+    }
+
+    public function kelas()
+    {
+        return $this->hasMany(Kelas::class);
+    }
+
+    public function User()
+    {
+        return $this->hasMany(User::class);
+    }
+
+
+
+    
+    
 }

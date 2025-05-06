@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('nis')->nullable();
-            $table->string('nama_lengkap')->nullable();
+            $table->string('nama_siswa');
+            $table->string('nama_lengkap')->nullable();       
+            $table->string('nis')->unique(); 
+            $table->foreignId('jurusan_id')->constrained('jurusans')->onDelete('cascade');
+            $table->foreignId('kelas_id')->constrained('kelas')->onDelete('cascade');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

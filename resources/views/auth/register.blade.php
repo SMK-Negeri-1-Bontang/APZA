@@ -12,12 +12,12 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                            <label for="nama_siswa" class="col-md-4 col-form-label text-md-end">{{ __('Nama Siswa') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="nama_siswa" type="text" class="form-control @error('nama_siswa') is-invalid @enderror" name="nama_siswa" value="{{ old('nama_siswa') }}" required autocomplete="nama_siswa" autofocus>
 
-                                @error('name')
+                                @error('nama_siswa')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -43,7 +43,7 @@
                             <label for="nis" class="col-md-4 col-form-label text-md-end">{{ __('NIS') }}</label>
 
                             <div class="col-md-6">
-                                <input id="nis" type="text" class="form-control @error('nis') is-invalid @enderror" name="nis" value="{{ old('nis') }}" required autocomplete="nis" autofocus>
+                                <input id="nis" type="number" class="form-control @error('nis') is-invalid @enderror" name="nis" value="{{ old('nis') }}" required autocomplete="nis" autofocus>
 
                                 @error('nis')
                                     <span class="invalid-feedback" role="alert">
@@ -53,22 +53,42 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('Role') }}</label>
+                        
+                       {{-- Jurusan --}}
+<select id="jurusan_id" name="jurusan_id" class="form-control" required>
+    <option value="">-- Pilih Jurusan --</option>
+    @foreach($jurusans as $jurusan)
+        <option value="{{ $jurusan->id }}">{{ $jurusan->nama_jurusan }}</option>
+    @endforeach
+</select>
 
-                            <div class="col-md-6">
-                                <select id="role" class="form-control @error('role') is-invalid @enderror" name="role" required>
-                                    <option value="user" selected>User</option>
-                                  
-                                </select>
+{{-- Kelas (dinamis) --}}
+<select id="kelas_id" name="kelas_id" class="form-control" required>
+    <option value="">-- Pilih Kelas --</option>
+</select>
 
-                                @error('role')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+{{-- Script AJAX --}}
+<script>
+    document.getElementById('jurusan_id').addEventListener('change', function () {
+        const jurusanId = this.value;
+        const kelasSelect = document.getElementById('kelas_id');
+        kelasSelect.innerHTML = '<option value="">Memuat...</option>';
+
+        fetch(`/get-kelas/${jurusanId}`)
+            .then(response => response.json())
+            .then(data => {
+                kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                data.forEach(kelas => {
+                    const option = document.createElement('option');
+                    option.value = kelas.id;
+                    option.textContent = kelas.nama_kelas;
+                    kelasSelect.appendChild(option);
+                });
+            });
+    });
+</script>
+
+                        
                        
 
                         <div class="row mb-3">

@@ -24,23 +24,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="kelas" class="col-md-4 col-form-label text-md-end">{{ __('Kelas') }}</label>
-                            <div class="col-md-6">
-                                <select id="kelas" class="form-control @error('kelas') is-invalid @enderror" name="kelas" required autofocus>
-                                    <option value="">Pilih Kelas</option>
-                                    <option value="X">X</option>
-                                    <option value="XI">XI</option>
-                                    <option value="XII">XII</option>
-                                    <option value="XII">XIII</option>
-                                </select>
-                                @error('kelas')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                    
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">

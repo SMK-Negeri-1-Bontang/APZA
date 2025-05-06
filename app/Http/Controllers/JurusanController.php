@@ -22,7 +22,6 @@ class JurusanController extends Controller
     {
         $jurusan = new Jurusan();
         $jurusan->nama_jurusan = $request->nama_jurusan;
-        $jurusan->kelas = $request->kelas;
         $jurusan->save();
 
         return redirect()->route('jurusan.index')->with('success', 'Jurusan created successfully.');
@@ -44,7 +43,6 @@ class JurusanController extends Controller
     {
         $jurusan = Jurusan::findOrFail($id);
         $jurusan->nama_jurusan = $request->nama_jurusan;
-        $jurusan->kelas = $request->kelas;
         $jurusan->save();
 
         return redirect()->route('jurusan.index')->with('success', 'Jurusan updated successfully.');

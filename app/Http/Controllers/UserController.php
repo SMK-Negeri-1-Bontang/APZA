@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Exception;
+use App\Models\Jurusan;
+use App\Models\Kelas;
+use Illuminate\Support\Facades\DB;
+
+
 
 class UserController extends Controller
 {
@@ -18,8 +23,9 @@ class UserController extends Controller
      */
     public function index()
     { 
-        $user = User::paginate(5);
-        return view('user.index')->withuser($user);  
+        
+        $users = User::paginate(5);
+        return view('user.index')->with('users', $users);  
     }
 
 
@@ -28,44 +34,44 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        $jurusans = Jurusan::all();
+        $kelas = Kelas::all();
+        return view('user.create', compact('jurusans', 'kelas'));
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|min:5',
-            'nama_lengkap' => 'required|unique:users|min:5',
+        $validatedData = $request->validate([
+            'nama_siswa' => 'required|string|max:255',
+            'nama_lengkap' => 'required|string|max:255|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:5',
-
-            'nis' => 'required|numeric',
+            'password' => 'required|string|min:5',
+            'jurusan_id' => 'required|integer|exists:jurusans,id',
+            'kelas_id' => 'required|integer|exists:kelas,id',
+            'role' => 'required|string|max:50',
+             'nis' => 'required|unique:users,nis,',
         ]);
 
-        try {
-            $user = User::create([
-                'name' => $request->name,
-                'nama_lengkap' => $request->nama_lengkap,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'nis' => $request->nis,
+        $user = User::create([
+            'nama_siswa' => $validatedData['nama_siswa'],
+            'nama_lengkap' => $validatedData['nama_lengkap'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'nis' => $validatedData['nis'],
+            'jurusan_id' => $validatedData['jurusan_id'],
+            'kelas_id' => $validatedData['kelas_id'],
+        ]);
 
-            ]);
+        $role = Role::create([
+            'user_id' => $user->id,
+            'role' => $validatedData['role'],
+        ]);
 
-            if ($user) {
-                $role = new Role;
-                $role->user_id = $user->id;
-                $role->role = $request->role;
-                $role->save();
-            }
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Data Gagal Disimpan');
-        }
-
-        return redirect('user')->with('success', 'Data Berhasil Disimpan');
+        return redirect()->route('user.index')->with('success', 'Data Berhasil Disimpan');
     }
 
     /**
@@ -73,18 +79,26 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-    //
+        $user = User::find($id);
+        if (!$user) {
+            abort(404);
+        }
+        return view('user.show', ['user' => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
 
-
-    public function edit(string $id)
+     public function edit(string $id)
     {
         $user = User::find($id);
-        return view('user.edit', ['user' => $user]);
+        $jurusans = Jurusan::all();
+        $kelas = Kelas::all();
+        if (!$user) {
+            abort(404);
+        }
+        return view('user.edit', ['user' => $user, 'jurusans' => $jurusans, 'kelas' => $kelas]);
     }
 
     /**
@@ -92,49 +106,51 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $user = User::find($id);
+
         $validated = $request->validate([
-            'name' => 'required|min:5',
-            'nama_lengkap' => 'required|min:5|unique:users,nama_lengkap,' . $id,
-            'email' => 'required|email|unique:users,email,' . $id,
-            'nis' => 'required|numeric',
+            'nama_siswa' => 'required|string|max:255',
+            'nama_lengkap' => 'required|string|max:255',
+            'nis' => 'required|string|max:255',
+            'email' => 'required|email',
+            'role' => 'required|string|max:50',
+            'jurusan_id' => 'required|integer',
+            'kelas_id' => 'required|integer',
         ]);
 
-        try {
-            $user = User::find($id); 
-            $user->name = $request->name;
-            $user->nama_lengkap = $request->nama_lengkap;
-            $user->email = $request->email;
-            $user->nis = $request->nis;
+        // Update user details
+        $user->update([
+            'nama_siswa' => $validated['nama_siswa'],
+            'nama_lengkap' => $validated['nama_lengkap'],
+            'nis' => $validated['nis'],
+            'email' => $validated['email'],
+            'jurusan_id' => $validated['jurusan_id'],
+            'kelas_id' => $validated['kelas_id'],
+        ]);
 
-            if ($request->password != '') {
-                $user->password = Hash::make($request->password);
-            }
-
-            $user->save();
-
-            $role = Role::where('user_id', $user->id)->first();
-            if ($role) {
-                $role->role = $request->role;
-                $role->save();
-            } else {
-                $role = new Role;
-                $role->user_id = $user->id;
-                $role->role = $request->role;
-                $role->save();
-            }
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Data Gagal Disimpan');
+        // Update role
+        $role = Role::where('user_id', $user->id)->first();
+        if ($role) {
+            $role->role = $validated['role'];
+            $role->save();
+        } else {
+            $role = new Role;
+            $role->user_id = $user->id;
+            $role->role = $validated['role'];
+            $role->save();
         }
 
-        return redirect('user')->with('success', 'Data Berhasil Disimpan');
+        return redirect()->route('user.index')->with('success', 'Profile updated successfully!');
     }
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         $user = User::find($id);
+        if (!$user) {
+            abort(404);
+        }
 
         try {
             $user->delete();
@@ -145,4 +161,11 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'User Berhasil dihapus');
     }
+
+    public function getKelas($jurusan_id)
+{
+    $kelas = Kelas::where('jurusan_id', $jurusan_id)->get();
+    return response()->json($kelas);
+}
+
 }

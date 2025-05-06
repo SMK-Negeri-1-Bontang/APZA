@@ -60,7 +60,7 @@
                         <div class="row mb-2">
                             <div class="col-md-8">
                                 <button type="submit" class="btn btn-primary float-start">
-                                    {{ __('Log in') }}
+                                    {{ __('Masuk') }}
                                 </button>
                             </div>
                         </div>

@@ -25,8 +25,8 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">{{ __('Name') }}</label>
-                    <input name="name" value="{{ old('name', $user->name) }}" class="form-input w-full border rounded px-3 py-2" required>
+                    <label class="block text-sm font-medium text-gray-700">{{ __('Nama Siswa') }}</label>
+                    <input name="nama_siswa" value="{{ old('nama_siswa', $user->nama_siswa) }}" class="form-input w-full border rounded px-3 py-2" required>
                 </div>
 
                 <div class="mb-4">
@@ -38,7 +38,23 @@
                     <label class="block text-sm font-medium text-gray-700">{{ __('NIS') }}</label>
                     <input name="nis" value="{{ old('nis', $user->nis) }}" class="form-input w-full border rounded px-3 py-2" required>
                 </div>
-              
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">{{ __('Jurusan') }}</label>
+                    <select name="jurusan_id" class="form-input w-full border rounded px-3 py-2" required>
+                        @foreach($jurusans as $jurusan)
+                            <option value="{{ $jurusan->id }}" @selected($user->jurusan_id == $jurusan->id)>{{ $jurusan->nama_jurusan }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">{{ __('Kelas') }}</label>
+                    <select name="kelas_id" class="form-input w-full border rounded px-3 py-2" required>
+                        @foreach($kelas as $kelas)
+                            <option value="{{ $kelas->id }}" @selected($user->kelas_id == $kelas->id)>{{ $kelas->nama_kelas }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">{{ __('Email') }}</label>
                     <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-input w-full border rounded px-3 py-2" required>
@@ -62,10 +78,10 @@
 
             @if (auth()->user()->role->role == 'admin')
                 <option value="admin" @selected($user->role->role == 'admin')>Admin</option>
-                <option value="user" @selected($user->role->role == 'user')>User</option>
-                <option value="petugas" @selected($user->role->role == 'petugas')>Petugas</option>
+                <option value="siswa" @selected($user->role->role == 'siswa')>Siswa</option>
+                <option value="ketua_kelas" @selected($user->role->role == 'ketua_kelas')>Ketua Kelas</option>
             @else
-                <option value="user" @selected($user->role->role == 'user')>User</option>
+                <option value="siswa" @selected($user->role->role == 'siswa')>Siswa</option>
             @endif
 
         </select>
