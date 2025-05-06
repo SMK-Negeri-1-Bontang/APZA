@@ -51,7 +51,7 @@
 
     <div id="izinFields" style="display: none; margin-top: 1em;">
         <label for="alasan">Alasan Izin</label>
-        <textarea name="alasan" id="alasan" rows="3"></textarea>
+        <textarea name="alasan" id="alasan" rows="3" ></textarea>
 
         <label for="bukti">Upload Bukti (opsional, PDF/JPG/PNG)</label>
         <input type="file" name="bukti" accept=".pdf,.jpg,.jpeg,.png">
@@ -68,7 +68,7 @@
     function toggleIzinFields() {
         const status = document.getElementById('status').value;
         const izinFields = document.getElementById('izinFields');
-        izinFields.style.display = (status === 'Izin') ? 'block' : 'none';
+        izinFields.style.display = (status === 'izin') ? 'block' : 'none';
     }
 
     // Trigger saat halaman dimuat

@@ -103,9 +103,11 @@ class AbsenController extends Controller
             'user_id' => $request->user_id,
             'jurusan_id' => $request->jurusan_id,
             'status' => $request->status,
+            'alasan' => $request->status === 'izin' ? $request->alasan : null,
+            'bukti' => $request->status === 'izin' ? $request->file('bukti')->store('bukti_izin', 'public') : null,
             'kelas_id' => $request->kelas_id,
             'tanggal' => $request->tanggal,
-
+            
           
         ]); 
 

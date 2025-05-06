@@ -38,23 +38,45 @@
                     <label class="block text-sm font-medium text-gray-700">{{ __('NIS') }}</label>
                     <input name="nis" value="{{ old('nis', $user->nis) }}" class="form-input w-full border rounded px-3 py-2" required>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">{{ __('Jurusan') }}</label>
-                    <select name="jurusan_id" class="form-input w-full border rounded px-3 py-2" required>
-                        @foreach($jurusans as $jurusan)
-                            <option value="{{ $jurusan->id }}" @selected($user->jurusan_id == $jurusan->id)>{{ $jurusan->nama_jurusan }}</option>
-                        @endforeach
-                    </select>
-                </div>
+               {{-- Jurusan --}}
+       {{-- Jurusan --}}
+       <select id="jurusan_id" name="jurusan_id" class="form-control" required>
+    <option value="">-- Pilih Jurusan --</option>
+    @foreach($jurusans as $jurusan)
+        <option value="{{ $jurusan->id }}" @selected($user->jurusan_id == $jurusan->id)>{{ $jurusan->nama_jurusan }}</option>
+    @endforeach
+</select>
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">{{ __('Kelas') }}</label>
-                    <select name="kelas_id" class="form-input w-full border rounded px-3 py-2" required>
-                        @foreach($kelas as $kelas)
-                            <option value="{{ $kelas->id }}" @selected($user->kelas_id == $kelas->id)>{{ $kelas->nama_kelas }}</option>
-                        @endforeach
-                    </select>
-                </div>
+{{-- Kelas (dinamis) --}}
+<select id="kelas_id" name="kelas_id" class="form-control" required>
+    <option value="">-- Pilih Kelas --</option>
+    @foreach($kelas as $k)
+    <option value="{{ $k->id }}" @selected($user->kelas_id == $k->id)>{{ $k->nama_kelas }}</option>
+
+    @endforeach
+</select>
+
+{{-- Script AJAX --}}
+<script>
+    document.getElementById('jurusan_id').addEventListener('change', function () {
+        const jurusanId = this.value;
+        const kelasSelect = document.getElementById('kelas_id');
+        kelasSelect.innerHTML = '<option value="">Memuat...</option>';
+
+        fetch(`/get-kelas/${jurusanId}`)
+            .then(response => response.json())
+            .then(data => {
+                kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                data.forEach(kelas => {
+                    const option = document.createElement('option');
+                    option.value = kelas.id;
+                    option.textContent = kelas.nama_kelas;
+                    kelasSelect.appendChild(option);
+                });
+            });
+    });
+</script>
+
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">{{ __('Email') }}</label>
                     <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-input w-full border rounded px-3 py-2" required>

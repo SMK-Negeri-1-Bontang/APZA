@@ -27,12 +27,11 @@
                 ['label' => 'Home', 'route' => 'welcome', 'icon' => 'home', 'roles' => ['admin', 'ketua_kelas', 'siswa']],
                 ['label' => 'Dashboard', 'route' => 'dashboard.index', 'icon' => 'home', 'roles' => ['admin', 'ketua_kelas', 'siswa']],
                 ['label' => 'Absen', 'route' => 'absen.create', 'icon' => 'calendar', 'roles' => ['admin', 'ketua_kelas', 'siswa']],
-                ['label' => 'Tampilkan Siswa', 'route' => 'absen.input', 'icon' => 'calendar', 'roles' => ['siswa', 'ketua_kelas', 'admin']],  
                 ['label' => 'User', 'route' => 'user.index', 'icon' => 'user', 'roles' => ['admin']],
                 ['label' => 'Absen', 'route' => 'absen.index', 'icon' => 'calendar', 'roles' => ['ketua_kelas', 'admin']],
                 ['label' => 'Jurusan', 'route' => 'jurusan.index', 'icon' => 'academic-cap', 'roles' => ['ketua_kelas', 'admin']],
                 ['label' => 'Laporan Izin', 'route' => 'izin.index', 'icon' => 'file-document', 'roles' => ['ketua_kelas', 'admin']],
-                ['label' => 'Riwayat Izin Saya', 'route' => 'izin.saya', 'icon' => 'file-document', 'roles' => ['ketua_kelas', 'admin']],
+                ['label' => 'Riwayat Izin Saya', 'route' => 'izin.saya', 'icon' => 'file-document', 'roles' => ['admin', 'ketua_kelas', 'siswa']],
                 ['label' => 'Kelas', 'route' => 'kelas.index', 'icon' => 'academic-cap', 'roles' => ['admin']],
 
             ];

@@ -40,6 +40,7 @@
                         <th>Nama</th>
                         <th>Status</th>
                         <th>Tanggal</th>
+                        <th>Izin</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,6 +49,11 @@
                             <td>{{ $absen->user->nama_siswa }}</td>
                             <td>{{ $absen->status }}</td>
                             <td>{{ \Carbon\Carbon::parse($absen->tanggal)->format('d M Y') }}</td>
+                            <td>
+                                @if($absen->status == 'izin')
+                                    <a href="{{ route('izin.index', ['absen_id' => $absen->id]) }}" class="btn btn-primary">Izin</a>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

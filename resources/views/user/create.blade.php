@@ -54,37 +54,40 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="jurusan_id" class="col-md-4 col-form-label text-md-end">{{ __('Jurusan') }}</label>
-                            <div class="col-md-6">
-                                <select id="jurusan_id" name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror" required>
-                                    @foreach($jurusans as $jurusan)
-                                        <option value="{{ $jurusan->id }}">{{ $jurusan->nama_jurusan }}</option>
-                                    @endforeach
-                                </select>
-                                @error('jurusan_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                        {{-- Jurusan --}}
+<select id="jurusan_id" name="jurusan_id" class="form-control" required>
+    <option value="">-- Pilih Jurusan --</option>
+    @foreach($jurusans as $jurusan)
+        <option value="{{ $jurusan->id }}">{{ $jurusan->nama_jurusan }}</option>
+    @endforeach
+</select>
 
-                        <div class="row mb-3">
-                            <label for="kelas_id" class="col-md-4 col-form-label text-md-end">{{ __('Kelas') }}</label>
-                            <div class="col-md-6">
-                                <select id="kelas_id" name="kelas_id" class="form-control @error('kelas_id') is-invalid @enderror" required>
-                                    @foreach($kelas as $kelas)
-                                        <option value="{{ $kelas->id }}">{{ $kelas->nama_kelas }}</option>
-                                    @endforeach
-                                </select>
-                                @error('kelas_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+{{-- Kelas (dinamis) --}}
+<select id="kelas_id" name="kelas_id" class="form-control" required>
+    <option value="">-- Pilih Kelas --</option>
+</select>
+
+{{-- Script AJAX --}}
+<script>
+    document.getElementById('jurusan_id').addEventListener('change', function () {
+        const jurusanId = this.value;
+        const kelasSelect = document.getElementById('kelas_id');
+        kelasSelect.innerHTML = '<option value="">Memuat...</option>';
+
+        fetch(`/get-kelas/${jurusanId}`)
+            .then(response => response.json())
+            .then(data => {
+                kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                data.forEach(kelas => {
+                    const option = document.createElement('option');
+                    option.value = kelas.id;
+                    option.textContent = kelas.nama_kelas;
+                    kelasSelect.appendChild(option);
+                });
+            });
+    });
+</script>
+
 
                         <div class="row mb-3">
                             <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('Level') }}</label>

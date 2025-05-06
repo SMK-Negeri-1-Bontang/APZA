@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Absen extends Model
 {
-    protected $fillable = ['user_id', 'tanggal', 'status', 'kelas_id', 'jurusan_id'];
+    protected $fillable = ['user_id', 'tanggal', 'status', 'kelas_id', 'jurusan_id', 'alasan', 'bukti'];
 
     public function user()
     {
