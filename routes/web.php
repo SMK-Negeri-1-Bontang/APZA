@@ -60,6 +60,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/absen/input/', [AbsenController::class, 'input'])->name('absen.input');
     Route::post('/absen/simpan', [AbsenController::class, 'simpan'])->name('absen.simpan');
 
+    Route::resource('berita', BeritaController::class);
+
    
 
    
